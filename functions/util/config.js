@@ -15,5 +15,6 @@ const firebase = require("firebase");
 admin.initializeApp();
 firebase.initializeApp(firebaseConfig);
 
+exports.admin = admin;
 exports.firestore = firebase.firestore();
 exports.auth = firebase.auth();

@@ -19,9 +19,10 @@ exports.getUserLanaguages = (req, res) => {
 exports.addLanguage = (req, res) => {
     const newLanaguage = {
         name: req.body.name,
-        userId: req.body.userId,
+        userId: req.user.uid,
         createdAt: new Date().toISOString(),
     }
+
 
     db.add(newLanaguage).then(
         doc => {

@@ -1,7 +1,4 @@
-const {
-    auth
-} = require('../util/config');
-
+const auth = require('../util/config').auth;
 const db = require('../util/config').firestore.collection("users");
 const validator = require('../util/validator');
 
@@ -13,21 +10,14 @@ exports.signup = (req, res) => {
         username: req.body.username,
     }
 
-    //TODO validate data
-    let errors = {}
-    if (validator.isEmpty(newUser.email)) {
-        errors.email = 'Must not be empty'
-    } else if (!validator.isEmail(newUser.email)) {
-        errors.email = 'Must be a valid email address'
-    }
 
-    if (validator.isEmpty(newUser.password)) errors.password = 'Must not be empty'
-    if (newUser.password !== newUser.confirmPassword) errors.confirmPassword = 'Passwords must match'
-    if (validator.isEmpty(newUser.username)) errors.username = 'Must not be empty'
+    const {
+        errors,
+        valid
+    } = validator.validateSignupData(newUser);
 
-    if (Object.keys(errors).length > 0) {
-        return res.status(400).json(errors);
-    }
+    if (!valid) return res.status(400).json(errors);
+
     let token, userId;
     db.doc(`/${newUser.username}`).get().then(doc => {
             if (doc.exists) {
@@ -81,12 +71,12 @@ exports.login = (req, res) => {
         email: req.body.email,
         password: req.body.password
     }
+    const {
+        errors,
+        valid
+    } = validator.validateLoginData(user);
 
-    let errors = {};
-    if (validator.isEmpty(user.email)) errors.email = 'Must not be empty';
-    if (validator.isEmpty(user.password)) errors.password = 'Must not be empty';
-
-    if (Object.keys(errors).length > 0) return res.status(400).json(errors);
+    if (!valid) return res.status(400).json(errors);
 
     auth.signInWithEmailAndPassword(user.email, user.password).then(
             data => {
@@ -108,9 +98,6 @@ exports.login = (req, res) => {
                     error: err.code
                 })
             }
-
-
-
         });
 
 }

@@ -21,6 +21,7 @@ exports.addNote = (req, res) => {
     const newNote = {
         content: req.body.content,
         languageId: req.body.languageId,
+        userId: req.user.uid,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
     }
