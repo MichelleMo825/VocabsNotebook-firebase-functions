@@ -18,6 +18,14 @@ module.exports = (req, res, next) => {
             decoded => {
                 // console.log(decoded)
                 req.user = decoded;
+                return db.where("userId", "==", req.user.uid).limit(1).get()
+
+
+            }
+        ).then(
+            data => {
+
+                req.user.username = data.docs[0].data().username;
                 return next();
             }
         )

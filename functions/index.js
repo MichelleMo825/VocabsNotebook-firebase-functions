@@ -11,6 +11,7 @@ const users = require("./handlers/user");
 //sign up route
 app.post('/signup', users.signup);
 app.post('/login', users.login);
+app.post('/user/image', FBauth, users.uploadImage);
 //languages route
 app.get("/languages", languages.getUserLanaguages);
 app.post("/language", FBauth, languages.addLanguage);

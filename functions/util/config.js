@@ -1,4 +1,4 @@
-var firebaseConfig = {
+const firebaseConfig = {
     apiKey: "AIzaSyCE5QzMjR2FawPKnEqXxA7ZONG3yuGE7bI",
     authDomain: "vocabsnotebook.firebaseapp.com",
     databaseURL: "https://vocabsnotebook.firebaseio.com",
@@ -15,6 +15,8 @@ const firebase = require("firebase");
 admin.initializeApp();
 firebase.initializeApp(firebaseConfig);
 
+exports.config = firebaseConfig;
 exports.admin = admin;
 exports.firestore = firebase.firestore();
+exports.storage = admin.storage();
 exports.auth = firebase.auth();
